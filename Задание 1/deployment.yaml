@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginxmultitool
+  annotations:
+    container1: nginx
+    container2: multitools
+spec:
+  replicas: 2
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: nginx-multitool
+  template:
+    metadata:
+      labels:
+        app: nginx-multitool
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          ports:
+            - name: web
+              containerPort: 80
+          livenessProbe:
+            tcpSocket:
+              port: 80
+            initialDelaySeconds: 10
+            timeoutSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 15
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 4
+        - name: multitool
+          image: praqma/network-multitool:alpine-extra
+          resources:
+          env:
+            - name: HTTP_PORT
+              value: "1181"
+            - name: HTTPS_PORT
+              value: "1443"
+          ports:
+            - name: http
+              containerPort: 1181
+              protocol: TCP
+            - name: https
+              containerPort: 1443
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: 1181
+            initialDelaySeconds: 10
+            timeoutSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 1181
+            initialDelaySeconds: 15
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 2

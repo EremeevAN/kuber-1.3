@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: one
+spec:
+  selector:
+    app: nginx-multitool
+  type: ClusterIP
+  ports:
+    - name: nginx
+      port: 8080
+      targetPort: 80
+    - name: multitool-http
+      port: 8081
+      targetPort: 1181
+    - name: multitool-https
+      port: 8443
+      targetPort: 1443
+...
