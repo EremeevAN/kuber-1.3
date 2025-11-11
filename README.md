@@ -77,11 +77,13 @@ spec:
 В результате у нас запускается один под:
 
 ![images](https://github.com/EremeevAN/kuber-1.3/blob/main/images/1.png)
+
 поменяем в строке   replicas: 1 на   replicas: 2
 
 Получаем на выходе 2 пода:
 
 ![images](https://github.com/EremeevAN/kuber-1.3/blob/main/images/2.png)
+
 Создаем сервис и под для доступа до приложений
 
 ```yaml
@@ -202,5 +204,6 @@ spec:
 ```
 
 Видим что Деплоймент заработал
+
 
 ![images](https://github.com/EremeevAN/kuber-1.3/blob/main/images/5.png)
